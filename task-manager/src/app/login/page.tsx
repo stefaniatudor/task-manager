@@ -10,15 +10,16 @@ export default function LoginPage() {
   const [password, setPassword] = useState("");
   const router = useRouter();
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
       await signInWithEmailAndPassword(auth, email, password);
-      router.push("/tasks"); 
-    } catch (error) {
-      alert((error as Error).message);
+      router.push("/tasks");
+    } catch (error: any) {
+      alert(error.message);
     }
   };
+  
 
   return (
     <div style={{
