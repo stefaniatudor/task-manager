@@ -99,6 +99,7 @@ firebase init hosting
 
 ## Project Structure
 
+```plaintext
 task-manager/
 ├── src/
 │   ├── app/
@@ -113,5 +114,4 @@ task-manager/
 ├── next.config.js
 ├── package.json
 └── README.md
-
 
