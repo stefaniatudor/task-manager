@@ -16,7 +16,7 @@ export default function LoginPage() {
       await signInWithEmailAndPassword(auth, email, password);
       router.push("/tasks"); 
     } catch (error) {
-      alert(error.message);
+      alert((error as Error).message);
     }
   };
 
