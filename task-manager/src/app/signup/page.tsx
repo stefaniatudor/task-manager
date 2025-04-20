@@ -2,21 +2,23 @@
 
 import { useState } from "react";
 import { auth } from "../../../firebase";
-import { signInWithEmailAndPassword } from "firebase/auth";
+import { createUserWithEmailAndPassword } from "firebase/auth";
 import { useRouter } from "next/navigation";
 
-export default function LoginPage() {
+export default function SignupPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const router = useRouter();
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSignup = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
-      await signInWithEmailAndPassword(auth, email, password);
-      router.push("/tasks");
-    } catch (error: any) {
-      alert(error.message);
+      await createUserWithEmailAndPassword(auth, email, password);
+      router.push("/tasks"); 
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        alert(error.message);
+      }
     }
   };
   
@@ -32,7 +34,7 @@ export default function LoginPage() {
       fontFamily: "'Poppins', sans-serif",
       padding: "20px"
     }}>
-      <form onSubmit={handleSubmit} style={{
+      <form onSubmit={handleSignup} style={{
         display: "flex",
         flexDirection: "column",
         gap: "15px",
@@ -43,7 +45,7 @@ export default function LoginPage() {
         width: "100%",
         maxWidth: "400px"
       }}>
-        <h1 style={{ textAlign: "center" }}>Sign In</h1>
+        <h1 style={{ textAlign: "center" }}>Create Account</h1>
         <input
           type="email"
           placeholder="Email"
@@ -60,7 +62,7 @@ export default function LoginPage() {
         />
         <input
           type="password"
-          placeholder="Password"
+          placeholder="Password (min. 6 characters)"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           required
@@ -82,15 +84,15 @@ export default function LoginPage() {
           cursor: "pointer",
           fontSize: "16px"
         }}>
-          Sign In
+          Sign Up
         </button>
         <p style={{ textAlign: "center", fontSize: "14px" }}>
-          Don't have an account?{" "}
+          Already have an account?{" "}
           <span
-            onClick={() => router.push("/signup")}
+            onClick={() => router.push("/login")}
             style={{ color: "#ffd6a5", cursor: "pointer", textDecoration: "underline" }}
           >
-            Create one
+            Sign In
           </span>
         </p>
       </form>
