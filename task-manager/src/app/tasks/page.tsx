@@ -28,7 +28,7 @@ export default function Tasks() {
   const [priority, setPriority] = useState("Low");
   const [category, setCategory] = useState("Other");
 
-  const [tasks, setTasks] = useState<{ id: string; createdAt: any; [key: string]: any }[]>([]);
+  const [tasks, setTasks] = useState<{ id: string; createdAt: string; [key: string]: string }[]>([]);
   const [editingTaskId, setEditingTaskId] = useState(null);
   const [showAddTaskForm, setShowAddTaskForm] = useState(false);
 
@@ -107,15 +107,15 @@ export default function Tasks() {
   };
   
 
-  const startEditingTask = (task: { id: SetStateAction<null>; title: SetStateAction<string>; description: SetStateAction<string>; dueDate: any; priority: any; }) => {
-    setEditingTaskId(task.id);
-    setTitle(task.title);
-    setDescription(task.description);
-    setDueDate(task.dueDate || "");
-    setPriority(task.priority || "Low");
-  };
+  // const startEditingTask = (task: { id: SetStateAction<null>; title: SetStateAction<string>; description: SetStateAction<string>; dueDate: string; priority: string; }) => {
+  //   setEditingTaskId(task.id);
+  //   setTitle(task.title);
+  //   setDescription(task.description);
+  //   setDueDate(task.dueDate || "");
+  //   setPriority(task.priority || "Low");
+  // };
 
-  const toggleCompleteTask = async (task: { [x: string]: any; id: any; createdAt?: any; completed?: any; }) => {
+  const toggleCompleteTask = async (task: { [x: string]: string; id: string; createdAt: string; completed: string; }) => {
     setFadingTasks((prev) => [...prev, task.id]);
     setTimeout(async () => {
       const taskDoc = doc(db, "tasks", task.id);
@@ -126,13 +126,13 @@ export default function Tasks() {
     }, 400);
   };
 
-  const handleDeleteTask = async (id: string) => {
-    try {
-      await deleteDoc(doc(db, "tasks", id));
-    } catch (error) {
-      alert((error as Error).message);
-    }
-  };
+  // const handleDeleteTask = async (id: string) => {
+  //   try {
+  //     await deleteDoc(doc(db, "tasks", id));
+  //   } catch (error) {
+  //     alert((error as Error).message);
+  //   }
+  // };
 
   const handleLogout = async () => {
     await signOut(auth);
@@ -148,7 +148,7 @@ export default function Tasks() {
     fontFamily: "'Poppins', sans-serif",
   };
 
-  const getCardColor = (priority: string, completed: any) => {
+  const getCardColor = (priority: string, completed: string) => {
     if (completed) return darkMode ? "#555555" : "#d3d3d3";
     if (priority === "High") return darkMode ? "#ff6b6b" : "#ffb3b3";
     if (priority === "Medium") return darkMode ? "#ffd93d" : "#fff3b0";
@@ -156,7 +156,7 @@ export default function Tasks() {
     return darkMode ? "#3d5a80" : "#fff7d6";
   };
 
-  const cardStyles = (priority: string, completed: any, isFading: boolean) => ({
+  const cardStyles = (priority: string, completed: string, isFading: boolean) => ({
     marginBottom: "20px",
     padding: "15px",
     borderRadius: "12px",
@@ -190,7 +190,7 @@ export default function Tasks() {
     return diffDays;
   };
 
-  const sortTasks = (taskList: { [key: string]: any; id: string; createdAt: any; }[]) => {
+  const sortTasks = (taskList: { [key: string]: string; id: string; createdAt: string; }[]) => {
     const sortedTasks = [...taskList];
     switch (sortBy) {
       case "priority":
@@ -297,7 +297,7 @@ export default function Tasks() {
       ...base,
       color: darkMode ? "#fff" : "#000",
     }),
-    option: (base, { isFocused, isSelected }) => ({
+    option: (base, { isFocused }) => ({
       ...base,
       backgroundColor: isFocused
         ? darkMode
@@ -333,7 +333,7 @@ export default function Tasks() {
       ...base,
       color: darkMode ? "#fff" : "#000",
     }),
-    option: (base, { isFocused, isSelected }) => ({
+    option: (base, { isFocused }) => ({
       ...base,
       backgroundColor: isFocused
         ? darkMode
@@ -454,8 +454,8 @@ export default function Tasks() {
                   <div style={{ display: "flex", alignItems: "center", gap: "10px", flexWrap: "wrap" }}>
                     <input
                       type="checkbox"
-                      checked={task.completed}
-                      onChange={() => toggleCompleteTask(task)}
+                      checked={task.completed as unknown as boolean}
+                      onChange={() => toggleCompleteTask(task as ({ [x: string]: string; id: string; createdAt: string; completed: string; }))}
                     />
                     <span style={{
                       textDecoration: task.completed ? "line-through" : "none",
