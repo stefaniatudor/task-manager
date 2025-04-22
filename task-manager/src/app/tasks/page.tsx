@@ -1,10 +1,10 @@
 "use client";
 
-import { useState, useEffect, SetStateAction } from "react";
+import { useState, useEffect } from "react";
 import { auth, db } from "../../../firebase";
 import { signOut } from "firebase/auth";
 import { useRouter } from "next/navigation";
-import { collection, addDoc, query, where, onSnapshot, deleteDoc, doc, updateDoc, serverTimestamp } from "firebase/firestore";
+import { collection, addDoc, query, where, onSnapshot, doc, updateDoc, serverTimestamp } from "firebase/firestore";
 import Select from 'react-select';
 
 const priorityOptions = [
